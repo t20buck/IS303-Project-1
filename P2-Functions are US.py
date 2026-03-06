@@ -1,59 +1,48 @@
-"""This program simulates the results of soccer games for a specified home team.
-It prompts the user for the home team name and the number of games to simulate,
-then generates random scores for each game and displays the results.
-Author: Kyle Pinkney"""
+"""
+-------------------------------
+Women's Soccer Season Simulator
+-------------------------------
+This program simulates a women's soccer season for a user-selected home team.
+The user picks their team from a list of real NWSL/college teams, selects opponents,
+and the program simulates games with random scores (no ties allowed).
 
-import random 
+Authors: Tye, Tanner, and Kyle
 
-# Get user input for home team and number of games
-home_team = input("Enter the name of your home team: ")
-number_of_games = int(input(f"Enter the number of games that {home_team} will play: "))
+"""
 
-# Initialize lists and dictionary to store game data
-opponent_teams = []
-opponent_scores = []
-home_team_scores = []
-home_team_record = {"Won Against": [], "Lost Against": []}
+# Import Libraries
+import random
 
-# Simulate each game
-for game_number in range(number_of_games):
-    opponent_teams.append(input(f"Enter the name of the away team for game {game_number + 1}: "))
-    home_score = random.randint(0, 3)
-    opponent_score = random.choice([i for i in range(0, 4) if i != home_score])
-    home_team_scores.append(home_score)
-    opponent_scores.append(opponent_score)
-    print(f"{home_team}'s score: {home_score} - {opponent_teams[game_number]}'s score: {opponent_score}")
+# My fun true variables
+Gospel = True
+Alive = True
+Single = True
 
-# Determine win/loss record
-for i in range(number_of_games):
-    if home_team_scores[i] > opponent_scores[i]:
-        home_team_record["Won Against"].append(opponent_teams[i])
-    else:
-        home_team_record["Lost Against"].append(opponent_teams[i])
+def introduction():
+    # Displays a welcome message
+    # And explains the rules
+    print("=" * 55)
+    print("   Welcome to the Women's Soccer Season Simulator!")
+    print("=" * 55)
+    print("\nHow it works:")
+    print("  1. Enter your home team ")
+    print("  2. Select opponents for each game you want to play.")
+    print("  3. Scores are randomly generated — no ties allowed!")
+    print("  4. At the end, see your season record and standing.\n")
 
-# Display results
-wins = 0 
-losses = 0
+    name = input("Before we begin, what is your name? ").strip().upper()
+    print(f"\nWelcome, {name}! Let's build your season.\n")
+    return name
 
-print("Teams won against:")
-for i in range(len(opponent_teams)):
-    if opponent_teams[i] in home_team_record["Won Against"]:
-        print(f"  {opponent_teams[i]}")
-        wins += 1
+def menu():
+    # Displays the menu 
+    # returns the choice
+    print("\n--- MAIN MENU ---")
+    print("1. Play a Season")
+    print("2. Quit")
+    while Alive:
+        choice = input("Enter your choice: ").strip()
+        if choice in ("1","2"):
+            return choice
+        print("Invalid choice. Please enter a number option.")
 
-print("Teams lost against:")
-for i in range(len(opponent_teams)):
-    if opponent_teams[i] in home_team_record["Lost Against"]:
-        print(f"  {opponent_teams[i]}")
-        losses += 1
-
-# Final Season Record 
-print(f"Final season record: {wins} - {losses}")
-
-win_percentage =   (wins/number_of_games)* 100
-if win_percentage >= 75:
-    print("Qualified for the NCAA Soccer Tournament!")
-elif win_percentage >= 50:
-    print("You had a good season.")
-elif win_percentage < 50:
-    print("Your team needs to practice!")
