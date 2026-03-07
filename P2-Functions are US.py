@@ -18,6 +18,27 @@ Gospel = True
 Alive = True
 Single = True
 
+# Default Team List
+default_teams = [
+    "Arizona",
+    "Arizona State",
+    "Baylor",
+    "Cincinnati",
+    "Colorado",
+    "Houston",
+    "Iowa State",
+    "Kansas",
+    "Kansas State",
+    "Oklahoma State",
+    "TCU",
+    "Texas Tech",
+    "UCF",
+    "Utah",
+    "West Virginia",
+    "UVU",
+    "BYU"
+]
+
 def introduction():
     # Displays a welcome message
     # And explains the rules
@@ -39,10 +60,115 @@ def menu():
     # returns the choice
     print("\n--- MAIN MENU ---")
     print("1. Play a Season")
-    print("2. Quit")
+    print("2. Customize the team list")
+    print("3. Quit")
     while Alive:
         choice = input("Enter your choice: ").strip()
-        if choice in ("1","2"):
+        if choice in ("1","2","3"):
             return choice
         print("Invalid choice. Please enter a number option.")
+
+def adjust_team_list():
+    # Adjust the team list
+    # INSERT FUNCTION HERE
+    return 1
+
+def get_team_name():
+    # Prompts user for their team
+    for team in default_teams:
+        print(team)
+    home_team = input("Enter the name of your home team: ")
+    return home_team
+
+def get_opponent_team(game_number):
+    # Prompts user for opponents
+    opponent = input(f"Enter the name of the away team for game {game_number}: ")
+    return opponent
+
+def play_game(home_team, opponent):
+    # Simulates a single soccer game between two teams.
+    # Generates random scores with no ties allowed.
+    # Returns: str: 'W' if home team wins, 'L' if home team loses.
+    home_score = random.randint(0, 5)
+    opponent_score = random.choice([s for s in range(0, 6) if s != home_score])
+
+    print(f"\n  {home_team}: {home_score}  vs  {opponent}: {opponent_score}")
+
+    if home_score > opponent_score:
+        print("  Result: WIN ")
+        return "W"
+    else:
+        print("  Result: LOSS")
+        return "L"
+
+
+def display_record(home_team, home_team_record):
+    # Displays the win loss record
+    wins = len(home_team_record["Won Against"])
+    losses = len(home_team_record["Lost Against"])
+    total = wins + losses
+
+    print("Teams won against:")
+    for team in home_team_record["Won Against"]:
+        print(f"  {team}")
+
+    print("Teams lost against:")
+    for team in home_team_record["Lost Against"]:
+        print(f"  {team}")
+
+    print(f"Final season record: {wins} - {losses}")
+
+    win_percentage = (wins / total) * 100
+    if win_percentage >= 75:
+        print("Qualified for the NCAA Soccer Tournament!")
+    elif win_percentage >= 50:
+        print("You had a good season.")
+    else:
+        print("Your team needs to practice!")
+
+
+def main():
+    # Get user name and display intro
+    user_name = introduction()
+
+    while Gospel:
+        # Display menu and get choice
+        choice = menu()
+
+        if choice == "1":
+            adjust_team_list()
+
+        elif choice == "3":
+            print(f"\nThanks for playing, {user_name}! See you next season!")
+            break
+
+        # Get home team name
+        home_team = get_team_name()
+
+        # Get number of games
+        number_of_games = int(input(f"Enter the number of games that {home_team} will play: "))
+
+        # Initialize record dictionary
+        home_team_record = {"Won Against": [], "Lost Against": []}
+
+        # Simulate each game
+        for game_number in range(1, number_of_games + 1):
+            opponent = get_opponent_team(game_number)
+            result = play_game(home_team,opponent)
+
+            if result == "W":
+                home_team_record["Won Against"].append(opponent)
+            elif result == "L":
+                home_team_record["Lost Against"].append(opponent)
+            else:
+                print("Something went wrong. Please contact 571-526-8888")
+
+        # Display final record
+        display_record(home_team, home_team_record)
+
+
+# Run the program
+main()
+    
+
 
