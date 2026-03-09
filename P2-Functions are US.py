@@ -129,7 +129,7 @@ def play_game(home_team, opponent):
         return "L"
 
 
-def display_record(home_team, home_team_record):
+def display_record(home_team_record):
     # Displays the win loss record
     wins = len(home_team_record["Won Against"])
     losses = len(home_team_record["Lost Against"])
@@ -187,7 +187,7 @@ def main():
                     print("Something went wrong. Please contact 571-526-8888")
 
             # Display final record
-            display_record(home_team, home_team_record)
+            display_record(home_team_record)
 
         elif choice == "2":
             adjust_team_list()
