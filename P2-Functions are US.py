@@ -70,8 +70,35 @@ def menu():
 
 def adjust_team_list():
     # Adjust the team list
-    # INSERT FUNCTION HERE
-    return 1
+    print("\nCurrent team list:")
+    for team in default_teams:
+        print(f"  {team}")
+    # adjust the team list menu
+    print("\n--- ADJUST TEAM LIST ---")
+    print("1. Add a team")
+    print("2. Remove a team")
+    print("3. Return to main menu")
+    while Alive:
+        choice = input("Enter your choice: ").strip()
+        if choice == "1":
+            new_team = input("Enter the name of the team to add: ").strip()
+            if new_team not in default_teams:
+                default_teams.append(new_team)
+                print(f"{new_team} has been added to the team list.")
+            else:
+                print("Invalid team name or team already exists.")
+        elif choice == "2":
+            team_to_remove = input("Enter the name of the team to remove: ").strip()
+            if team_to_remove in default_teams:
+                default_teams.remove(team_to_remove)
+                print(f"{team_to_remove} has been removed from the team list.")
+            else:
+                print("Team not found in the list.")
+        elif choice == "3":
+            print("Returning to main menu...")
+            break
+        else:
+            print("Invalid choice. Please enter a number option.")
 
 def get_team_name():
     # Prompts user for their team
@@ -136,39 +163,39 @@ def main():
         choice = menu()
 
         if choice == "1":
+            print("\nStarting a new season...")
+            
+            # Get home team name
+            home_team = get_team_name()
+
+            # Get number of games
+            number_of_games = int(input(f"Enter the number of games that {home_team} will play: "))
+
+            # Initialize record dictionary
+            home_team_record = {"Won Against": [], "Lost Against": []}
+
+            # Simulate each game
+            for game_number in range(1, number_of_games + 1):
+                opponent = get_opponent_team(game_number)
+                result = play_game(home_team,opponent)
+
+                if result == "W":
+                    home_team_record["Won Against"].append(opponent)
+                elif result == "L":
+                    home_team_record["Lost Against"].append(opponent)
+                else:
+                    print("Something went wrong. Please contact 571-526-8888")
+
+            # Display final record
+            display_record(home_team, home_team_record)
+
+        elif choice == "2":
             adjust_team_list()
 
         elif choice == "3":
             print(f"\nThanks for playing, {user_name}! See you next season!")
             break
 
-        # Get home team name
-        home_team = get_team_name()
-
-        # Get number of games
-        number_of_games = int(input(f"Enter the number of games that {home_team} will play: "))
-
-        # Initialize record dictionary
-        home_team_record = {"Won Against": [], "Lost Against": []}
-
-        # Simulate each game
-        for game_number in range(1, number_of_games + 1):
-            opponent = get_opponent_team(game_number)
-            result = play_game(home_team,opponent)
-
-            if result == "W":
-                home_team_record["Won Against"].append(opponent)
-            elif result == "L":
-                home_team_record["Lost Against"].append(opponent)
-            else:
-                print("Something went wrong. Please contact 571-526-8888")
-
-        # Display final record
-        display_record(home_team, home_team_record)
-
 
 # Run the program
 main()
-    
-
-
